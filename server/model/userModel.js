@@ -30,26 +30,9 @@ User.getUserByUsername = (username, password, result) => {
 }
 
 User.insertNewUser = (user, result) => {
-    // sql.query("INSERT INTO user "
-    // + "(user_id, username, password, first_name, last_name, email, create_date, modify_date)"
-    // + "VALUES" 
-    // + "(null, ?, ?, ?, ?, ?, NOW(), NOW());", 
-    // user.username, user.password, 
-    // user.firstName, user.lastName, user.email, (err, res) => {
-    //     if (err) {
-    //         console.log(err);
-    //     } else {
-    //         console.log(res);
-    //         // const newUser = getUserByUsername(user.getUsername());
-    //         // if (newUser)
-    //         //     result(null, newUser);
-    //         // else result(null, null);
-    //     }
-    // })
     user.create_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
     user.modify_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    sql.query("INSERT INTO user set ?", user, function (err, res) {
-                
+    sql.query("INSERT INTO user SET ?", user, function (err, res) {
         if(err) {
             console.log("error: ", err);
             result(err, null);

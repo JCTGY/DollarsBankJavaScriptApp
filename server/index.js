@@ -8,5 +8,5 @@ app.listen(5000, () => {
     console.log("Sucesse connect to port 5000");
 });
 
-const routes = require('./routes/userRoutes');
+const routes = require('./routes/apiRoutes');
 routes(app);
