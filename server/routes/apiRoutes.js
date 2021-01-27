@@ -5,9 +5,9 @@ module.exports = function(app) {
     const accountController = require('../controller/accountController');
     const transactionController = require('../controller/transactionController');
 
-    app.route('/user/login')
+    app.route('/user/signIn')
         .post(userController.login);
-    app.route('/user/signup')
+    app.route('/user/signUp')
         .post(userController.signup);
     app.route('/account')
         .get(accountController.getAllAccountsByUserId)
