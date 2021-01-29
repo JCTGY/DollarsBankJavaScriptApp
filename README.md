@@ -33,7 +33,14 @@ node v14.15.0
 
 ```
 cd ~
-git clone https://github.com/JCTGY/DollarsBankCoreJavaApp.git
-import project to Eclipse
-run the program
+git clone https://github.com/JCTGY/DollarsBankJavaScriptApp.git
+cd DollarsBankJavaScriptApp/client
+npm install
+cd ../server
+npm install
+node index.js
+
+open another terminal
+go to client then run
+npm start
 ```
