@@ -27,7 +27,7 @@
 - After 1 week attempt - sample code will be released
 
 ## Prerequisites
-node v14.15.0\
+node v14.15.0
 
 ## How to use
 
