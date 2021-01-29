@@ -13,7 +13,7 @@ const Transaction = function(transaction) {
 
 Transaction.getTransactionsByAccountId = (accountId, result) => {
     const id = Number.parseInt(accountId, 10);
-    sql.query("SELECT * FROM transaction WHERE account_id = ? LIMIT 5", id, (err, res) => {
+    sql.query("SELECT * FROM transaction WHERE account_id = ? ORDER BY create_date DESC  LIMIT 5", id, (err, res) => {
         if (err) console.log(err);
         else {
             result(null, res);

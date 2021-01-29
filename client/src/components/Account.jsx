@@ -2,14 +2,22 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Row, Col, Button, InputGroup, FormControl } from 'react-bootstrap';
 import { BiArrowBack } from 'react-icons/bi';
+import { useSelector } from 'react-redux';
 
 import { fetchAccountById, updateAccount } from '../api/AccountApi';
+import { insertNewTransaction } from '../api/TransactionApi';
+import { fetchAllTransactionsByAccountId } from '../api/TransactionApi';
 import Transaction from './Transaction';
 
 const Account = () => {
 
+    const user = useSelector(state => state.userState.user);
     const [account, setAccount] = useState();
     const [balance, setBalance] = useState();
+    const [transType, setTransType] = useState();
+    const [changes, setChanges] = useState();
+    const [transaction, setTransactioin] = useState();
+    const [tranList, setTranList] = useState();
     const [transferId, setTransferId] = useState();
     const formAmount = useRef(0.0);
     const { accountId } = useParams();
@@ -28,12 +36,30 @@ const Account = () => {
         if (!account || account === undefined) return ;
         updateAccount(account).then(res => {
             setAccount(res.data);
+            console.log("changes", changes);
+            setTransactioin({
+                amount: changes,
+                user_id : user.user_id,
+                account_id: account.account_id,
+                type: transType,
+            })
         }).catch(err => console.log(err));
     }, [balance])
 
+    useEffect(() => {
+        if (transaction && transaction.amount !== undefined) {
+        insertNewTransaction(transaction).then(() => {
+            fetchAllTransactionsByAccountId(account.account_id).then(res => {
+                setTranList(res.data);
+            })
+        }).catch(err => console.log(err))
+    }
+    }, [transaction])
+
     const onClickWithdraw = () => {
-        const changes = Number.parseFloat(formAmount.current.value);
+        setChanges(Number.parseFloat(formAmount.current.value));
         if (!changes || isNaN(changes) || changes > account.balance) return ;
+        setTransType("Withdraw");
         setAccount({
             ...account,
             balance: account.balance - changes
@@ -42,9 +68,10 @@ const Account = () => {
     }
 
     const onClickDeposit = () => {
-        const changes = Number.parseFloat(formAmount.current.value);
+        setChanges(Number.parseFloat(formAmount.current.value));
         if (!changes || isNaN(changes)) return ;
         console.log("deposit", account);
+        setTransType("Deposit");
         setAccount({
             ...account,
             balance: account.balance + changes
@@ -57,12 +84,12 @@ const Account = () => {
         if (!id || isNaN(id)) setTransferId(0);
         setTransferId(id);
     }
+
     const onClickTransfer = () => {
-        const changes = Number.parseFloat(formAmount.current.value);
-        console.log("tr id: ", transferId);
-        console.log("changes: ", changes);
+        setChanges(Number.parseFloat(formAmount.current.value));
         if (!transferId || isNaN(transferId)) return ;
         if (!changes || isNaN(changes) || changes > account.balance) return ;
+        setTransType(`Transfer To Account: ${transferId}`);
         fetchAccountById(transferId).then(res => {
             console.log(res.data);
             setAccount({
@@ -76,7 +103,7 @@ const Account = () => {
             setBalance(account.balance);
         }).catch(err => {
             console.log(err);
-        }) 
+        })
     }
 
     return (
@@ -139,7 +166,7 @@ const Account = () => {
                         />
                     </InputGroup>
 
-                <Transaction accountId={account.account_id}/>
+                <Transaction tranList={tranList}/>
                 <Link id="back-to-user" to="/user"><BiArrowBack/></Link>
                 </div>
             }

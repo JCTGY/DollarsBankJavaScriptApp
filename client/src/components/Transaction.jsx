@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Table } from 'react-bootstrap';
 
-import { fetchAllTransactionsByAccountId } from '../api/TransactionApi';
 
-const Transaction = ({ accountId }) => {
+const Transaction = ({ tranList }) => {
 
-    const [transaction, setTransaction] = useState();
+    // const [transaction, setTransaction] = useState();
 
-    useEffect(() => {
-        fetchAllTransactionsByAccountId(accountId).then(res => {
-            setTransaction(res.data);
-        })
-    }, []);
+    // useEffect(() => {
+    //     fetchAllTransactionsByAccountId(accountId).then(res => {
+    //         setTransaction(res.data);
+    //     })
+    // }, []);
 
-    const transactionList = transaction && transaction.map(t => {
+    const transactionList = tranList && tranList.map(t => {
         return (
             <tr key={t.transaction_id}>
                 <td>{t.type}</td>
@@ -25,7 +24,7 @@ const Transaction = ({ accountId }) => {
     return (
         <div>
             <hr></hr>
-            {(transaction && transaction.length !== 0) &&
+            {(tranList && tranList.length !== 0) &&
                 <Table striped bordered hover>
                     <thead>
                         <tr>
