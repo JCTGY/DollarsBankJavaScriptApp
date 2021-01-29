@@ -33,12 +33,14 @@ Account.getAccountById = (accountId, result) => {
 
 Account.updateAccount = (account, result) => {
     account.modify_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    delete account["create_date"];
     sql.query("UPDATE account SET ? WHERE account_id = ?", [account, account.account_id], (err, res) => {
         if (err) console.log(err);
         else {
             if (!res) result("update falied", null);
             else {
                 sql.query("SELECT * FROM account WHERE account_id = ? LIMIT 1", account.account_id, (err, updateAccount) => {
+                    console.log("update Account: " , updateAccount);
                     if (err) result(err, null);
                     result(null, updateAccount);
                 });

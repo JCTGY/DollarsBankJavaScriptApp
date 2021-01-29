@@ -12,14 +12,15 @@ exports.getAllAccountsByUserId = (req, res) => {
 exports.getAccountById = (req, res) => {
     Account.getAccountById(req.params.accountId, (err, account) => {
         if (err) console.log(err);
-        res.json(account);
+        res.json(account[0]);
     })
 }
 
 exports.updateAccountById = (req, res) => {
     Account.updateAccount(req.body, (err, account) => {
         if (err) console.log(err);
-        res.json(account);
+        if (!account || account.length == 0) res.send(null);
+        else res.json(account[0]);
     })
 }
 

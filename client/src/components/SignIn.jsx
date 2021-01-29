@@ -29,7 +29,7 @@ const SignIn = () => {
             .then(res => {
                 console.log("user: " + res.data);
                 dispatch({ type: 'SIGNIN', payload: res.data })
-                history.push("/products");
+                history.push("/user");
             }).catch(err => {
                 console.log(user);
                 triggerQtyWarning();

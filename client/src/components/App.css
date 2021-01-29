@@ -145,3 +145,11 @@ a.main-btn:hover{
         right: 5vw;
     }
   }
+
+  #back-to-user{
+    font-size: 2em;
+    position: absolute;
+    left: 3%;
+    bottom: 1%;
+    color: var(--clr-accent);
+}

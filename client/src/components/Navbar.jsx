@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import User from './User';
 import Account from './Account';
-import History from './History';
+import Transaction from './Transaction';
 import Login from './Login';
 import SignIn from "./SignIn";
 import SignUp from './SignUp';
@@ -17,9 +17,6 @@ const NavBar = props => {
         <Router>
             <div className="NavBar">
                 <Link to="/"><h2>DollarBank</h2></Link>
-                <Link to="/user">User</Link>
-                <Link to="/account">Account</Link>
-                <Link to="/history">History</Link>
                 <Login/>
             </div>
 
@@ -29,24 +26,18 @@ const NavBar = props => {
                         <Link id="home" to="/signIn">LogIn</Link>
                     </div>
                 </Route>
+                <PrivateRoute 
+                    component={Account}
+                    authed={user.auth} 
+                    path="/account/:accountId" 
+                    exact
+                />
                 <PrivateRoute
                     component={User}
                     authed={user.auth} 
                     path="/user" 
                     exact
-                />
-                <PrivateRoute 
-                    component={Account}
-                    authed={user.auth} 
-                    path="/account" 
-                    exact
-                />
-                <PrivateRoute 
-                    component={History}
-                    authed={user.auth} 
-                    path="/history" 
-                    exact
-                />      
+                /> 
                 <Route path="/signIn">
                     <SignIn/>
                 </Route>
